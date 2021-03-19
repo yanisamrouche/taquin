@@ -21,7 +21,7 @@ public class BreadthFirstSearchAlgorithm extends Solver {
         timeCPUNS = System.nanoTime();
         if (!estSolvable()) {
             System.out.println("Insolvable");
-            return null;
+            throw new RuntimeException("but impossible à atteindre");
         }
 
         Etat current;
@@ -55,6 +55,8 @@ public class BreadthFirstSearchAlgorithm extends Solver {
         SolutionLength = solution.getListeMouvements().length();
         MaxSize = map.getList().size();
         timeCPUNS = System.nanoTime() - timeCPUNS;
+        System.out.println("Le nombre d'états dans la liste ouverte "+file+" : "+file.size());
+        System.out.println("temps CPU pour résoudre l'instance : "+timeCPUNS);
         return solution;
     }
 

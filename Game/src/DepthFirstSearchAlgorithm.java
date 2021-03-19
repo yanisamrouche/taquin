@@ -22,6 +22,10 @@ public class DepthFirstSearchAlgorithm extends Solver{
         timeCPUNS = System.nanoTime();
         Etat currentEtat;
         depthLimit = 5;
+        if (!estSolvable()){
+            System.out.println("Insolvable");
+            throw new RuntimeException("but impossible à atteindre");
+        }
         while (solution == null){
             isDone = true;
             map = new HashEtats();
@@ -42,6 +46,8 @@ public class DepthFirstSearchAlgorithm extends Solver{
         SolutionLength = solution.getListeMouvements().length();
         MaxSize = map.getList().size();
         timeCPUNS = System.nanoTime() - timeCPUNS;
+        System.out.println("Le nombre d'états dans la liste ouverte "+stack+" : "+stack.size());
+        System.out.println("temps CPU pour résoudre l'instance : "+timeCPUNS);
         return solution;
     }
     /* Ajoute dans la pile les fils de e qui sont admissibles */

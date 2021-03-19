@@ -2,13 +2,16 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class Taquin {
     public static void main(String[] args){
 
-       char[][] debut = generateInitialTaquin("taquin_3x3c.grid.txt");
+         char[][] debut = generateInitialTaquin(args[1]);
         System.out.println("------------------------------");
-        char[][] fin  = generateFinalTaquin("taquin_3x3c.grid.txt");
-/**
+         char[][] fin  = generateFinalTaquin(args[1]);
+
+
+
+         /*
         char[][] debut = {
                 {' ', '2'},
                 {'1', '3'}
@@ -18,13 +21,32 @@ public class Main {
                 {'1', '2'},
                 {'3', ' '}
         };
- */
+
+          */
+
+
 
 
         Etat etat = new Etat("", debut, fin);
-        BreadthFirstSearchAlgorithm s = new BreadthFirstSearchAlgorithm(etat);
+        DepthFirstSearchAlgorithm p;
+        BreadthFirstSearchAlgorithm l;
+        BestFirstSearchAlgorithm m;
+        Etat resultat = null;
+        if (args[0].equals("p")) {
+             p = new DepthFirstSearchAlgorithm(etat);
+             resultat = p.solve();
+        }
+        else if (args[0].equals("l")){
+            l = new BreadthFirstSearchAlgorithm(etat);
+            resultat = l.solve();
+        }
+        else if (args[0].equals("m")){
+            m = new BestFirstSearchAlgorithm(etat);
+            resultat = m.solve();
+        }
+        else{
+            System.out.println("erreur");}
         System.out.println(" la solution est : ");
-        Etat resultat = s.solve();
         System.out.println("->"+resultat.getListeMouvements());
         if (resultat != null){
             char[] cl = resultat.getListeMouvements().toCharArray();
