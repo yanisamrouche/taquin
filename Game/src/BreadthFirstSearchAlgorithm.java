@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class BreadthFirstSearchAlgorithm extends Solver {
     HashEtats map;
     LinkedBlockingQueue<Etat> file;
+    List<Etat> Fermé = new ArrayList<>();
     Etat solution;
     boolean algoEnCours;
 
@@ -17,46 +20,32 @@ public class BreadthFirstSearchAlgorithm extends Solver {
     }
 
     public Etat solve(){
-
         timeCPUNS = System.nanoTime();
         if (!estSolvable()) {
             System.out.println("Insolvable");
             throw new RuntimeException("but impossible à atteindre");
         }
-
+        System.out.println("Instance soluble avec le "+AlgoName);
+        System.out.println("--------------------------------------");
         Etat current;
         while (solution == null){
-
             algoEnCours =true;
-
             map = new HashEtats();
-
             map.add(etatInit);
             file = new LinkedBlockingQueue<Etat>();
-
             file.add(etatInit);
-
             while (algoEnCours){
-
                 current = file.poll();
-
+                Fermé.add(current);
                 generation(current);
-
                 testSolution(current);
-
                 if (file.isEmpty()){
-
-                    algoEnCours = false;
-                }
-
+                    algoEnCours = false; }
             }
         }
-
         SolutionLength = solution.getListeMouvements().length();
         MaxSize = map.getList().size();
         timeCPUNS = System.nanoTime() - timeCPUNS;
-        System.out.println("Le nombre d'états dans la liste ouverte "+file+" : "+file.size());
-        System.out.println("temps CPU pour résoudre l'instance : "+timeCPUNS);
         return solution;
     }
 

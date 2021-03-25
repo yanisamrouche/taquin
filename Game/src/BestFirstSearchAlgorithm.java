@@ -1,8 +1,12 @@
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class BestFirstSearchAlgorithm extends Solver {
 
+    PriorityQueue<Etat> listeOuverte;
+    List<Etat> Fermé = new ArrayList<>();
 
     public BestFirstSearchAlgorithm(Etat etatInit) {
         super(etatInit);
@@ -14,24 +18,25 @@ public class BestFirstSearchAlgorithm extends Solver {
             System.out.println("Insolvable");
             throw new RuntimeException("but impossible à atteindre");
         }
+        System.out.println("Instance soluble avec le "+AlgoName);
+        System.out.println("--------------------------------------");
         long start = System.nanoTime();
         nbVisitedVertex = 0;
         MaxSize = 0;
         Etat init = etatInit;
         Etat fin = new Etat("", init.getEtatFinal(), init.getEtatFinal());
         Manhattan cmp = new Manhattan();
-        PriorityQueue<Etat> listeOuverte = new PriorityQueue<>(cmp);
+        listeOuverte = new PriorityQueue<>(cmp);
         listeOuverte.add(init);
         while (!listeOuverte.isEmpty()) {
             Etat current = listeOuverte.poll();
+            Fermé.add(current);
             nbVisitedVertex++;
             if (current.toHashkey().equals(fin.toHashkey())) {
                 SolutionLength = current.getNbreMouvements();
                 Solution = current.getListeMouvements();
                 long end = System.nanoTime();
                 timeCPUNS = end - start;
-                System.out.println("Le nombre d'états dans la liste ouverte "+listeOuverte+" : "+listeOuverte.size());
-                System.out.println("temps CPU pour résoudre l'instance : "+timeCPUNS);
                 return current;
             } else {
                 for (Deplacement d : Deplacement.values()) {

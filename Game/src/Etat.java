@@ -1,5 +1,3 @@
-import java.lang.annotation.Documented;
-
 public class Etat {
     private char[][] etatFinal;
     private String listeMouvements;
@@ -129,15 +127,15 @@ public class Etat {
                     break;
                 case 'G': // on peut peut faire un deplacement vers la gauche
                      newEtat[i][j] = newEtat[i][j+1];
-                     newEtat[i][j+1] = ' ';;
+                     newEtat[i][j+1] = ' ';
                      break;
                 case 'H': // on peut peut faire un deplacement vers le haut
                     newEtat[i][j] = newEtat[i+1][j];
-                    newEtat[i+1][j] = ' ';;
+                    newEtat[i+1][j] = ' ';
                     break;
                 case 'B': // on peut peut faire un deplacement vers le bas
                     newEtat[i][j] = newEtat[i-1][j] ;
-                    newEtat[i-1][j] = ' ';;
+                    newEtat[i-1][j] = ' ';
                     break;
                 default:
                     return null;

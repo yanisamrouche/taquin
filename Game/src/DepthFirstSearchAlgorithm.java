@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class DepthFirstSearchAlgorithm extends Solver{
 
   HashEtats map;
   Stack<Etat> stack;
+  List<Etat> Fermé = new ArrayList<>();
   Etat solution;
   boolean isDone;
   int depthLimit;
@@ -24,9 +27,12 @@ public class DepthFirstSearchAlgorithm extends Solver{
         depthLimit = 5;
         if (!estSolvable()){
             System.out.println("Insolvable");
-            throw new RuntimeException("but impossible à atteindre");
+            return null;
         }
+        System.out.println("Instance soluble avec le "+AlgoName);
+        System.out.println("--------------------------------------");
         while (solution == null){
+
             isDone = true;
             map = new HashEtats();
             map.add(etatInit);
@@ -34,6 +40,7 @@ public class DepthFirstSearchAlgorithm extends Solver{
             stack.push(etatInit);
             while (isDone){
                 currentEtat = stack.pop();
+                Fermé.add(currentEtat);
                 generateNeighbours(currentEtat);
                 isSolution(currentEtat);
                 if (stack.isEmpty()){
@@ -46,13 +53,13 @@ public class DepthFirstSearchAlgorithm extends Solver{
         SolutionLength = solution.getListeMouvements().length();
         MaxSize = map.getList().size();
         timeCPUNS = System.nanoTime() - timeCPUNS;
-        System.out.println("Le nombre d'états dans la liste ouverte "+stack+" : "+stack.size());
-        System.out.println("temps CPU pour résoudre l'instance : "+timeCPUNS);
         return solution;
     }
     /* Ajoute dans la pile les fils de e qui sont admissibles */
     public int generateNeighbours(Etat e){
         if(solution != null && e.getScoreManatthan() + 1 >= solution.getScoreManatthan()){
+            return 0;
+        }else if(e.getScoreManatthan() + 1 >= depthLimit){
             return 0;
         }
         int count = 0;
@@ -66,7 +73,7 @@ public class DepthFirstSearchAlgorithm extends Solver{
                 count++;
             }
         }
-        return 0;
+        return count;
     }
 
     public boolean isSolution(Etat e){
