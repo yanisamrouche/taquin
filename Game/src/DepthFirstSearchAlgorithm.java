@@ -6,9 +6,9 @@ public class DepthFirstSearchAlgorithm extends Solver{
 
   HashEtats map;
   Stack<Etat> stack;
-  List<Etat> Fermé = new ArrayList<>();
+  List<Etat> Ferme = new ArrayList<>();
   Etat solution;
-  boolean isDone;
+  boolean algoEnCours ;
   int depthLimit;
 
     public DepthFirstSearchAlgorithm(Etat etatInit) {
@@ -32,19 +32,18 @@ public class DepthFirstSearchAlgorithm extends Solver{
         System.out.println("Instance soluble avec le "+AlgoName);
         System.out.println("--------------------------------------");
         while (solution == null){
-
-            isDone = true;
+            algoEnCours = true;
             map = new HashEtats();
             map.add(etatInit);
             stack = new Stack<>();
             stack.push(etatInit);
-            while (isDone){
+            while (algoEnCours){
                 currentEtat = stack.pop();
-                Fermé.add(currentEtat);
+                Ferme.add(currentEtat);
                 generateNeighbours(currentEtat);
                 isSolution(currentEtat);
                 if (stack.isEmpty()){
-                    isDone = false;
+                    algoEnCours = false;
                 }
             }
             depthLimit += 10;

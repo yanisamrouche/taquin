@@ -19,7 +19,7 @@ public class Solver {
      * @return true si le jeu est fesable
      */
     public boolean estSolvable(){
-        char[][] plateauInitial = etatInit.getListeCases();
+        char[][] plateauInitial = etatInit.getEtatInit();
         char[][] plateauFinal = etatInit.getEtatFinal();
 
         char[][] plateau;
@@ -32,7 +32,7 @@ public class Solver {
             plateau[i] = plateauInitial[i].clone();
         }
 
-        //On cercher le nombre de deplacemment de la case vide
+        //On chercher le nombre de deplacemment de la case vide
         i1=0;
         j1=0;
         while (plateau[i1][j1] != ' '){

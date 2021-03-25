@@ -12,7 +12,7 @@ public class HashEtats {
 
     /**
      * @param etat L'état à ajouter
-     * @return Booléen : l'ajout s'est bien fait dans le tableau. Si ce n'est pas le cas, c'est que l'état avait déjà été trouvé de manière plus optimisée.
+     * @return Booléen : l'ajout s'est bien fait dans le tableau. Si ce n'est pas le cas, c'est que l'état avait déjà été trouvé .
      */
 
     public boolean add(Etat etat) {

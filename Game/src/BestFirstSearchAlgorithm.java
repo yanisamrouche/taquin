@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 public class BestFirstSearchAlgorithm extends Solver {
 
     PriorityQueue<Etat> listeOuverte;
-    List<Etat> Fermé = new ArrayList<>();
+    List<Etat> Ferme = new ArrayList<>();
 
     public BestFirstSearchAlgorithm(Etat etatInit) {
         super(etatInit);
@@ -30,7 +30,7 @@ public class BestFirstSearchAlgorithm extends Solver {
         listeOuverte.add(init);
         while (!listeOuverte.isEmpty()) {
             Etat current = listeOuverte.poll();
-            Fermé.add(current);
+            Ferme.add(current);
             nbVisitedVertex++;
             if (current.toHashkey().equals(fin.toHashkey())) {
                 SolutionLength = current.getNbreMouvements();

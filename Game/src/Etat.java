@@ -1,12 +1,12 @@
 public class Etat {
     private char[][] etatFinal;
     private String listeMouvements;
-    private char[][] listeCases; //etatInit
+    private char[][] etatInit; //etatInit
     private int[] coordVide = new int[2]; // les coord. de la case vide ( i , j ) {i: la ligne, j: la colonne}
 
     public Etat(String listeMouvements, char[][] listeCases, char[][] etatFinal){
         this.listeMouvements = listeMouvements;
-        this.listeCases = listeCases;
+        this.etatInit = listeCases;
         this.etatFinal = etatFinal;
         // récuperer la position de la case vide
         for (int i=0; i < listeCases.length; i++){
@@ -25,7 +25,7 @@ public class Etat {
 
     public String toHashkey(){//mettre les lignes du taquin dans un tampon
         String tmp = "";
-        for(char[] ligne : listeCases){
+        for(char[] ligne : etatInit){
             for (char _case : ligne ){
                 tmp += _case;
             }
@@ -40,9 +40,9 @@ public class Etat {
      * false sinon
      */
     public boolean isFinal(){
-        for(int i=0; i < listeCases.length; i++ ){
-            for(int j=0; j < listeCases.length; j++ ){
-                if(listeCases[i][j] != etatFinal[i][j]){
+        for(int i = 0; i < etatInit.length; i++ ){
+            for(int j = 0; j < etatInit.length; j++ ){
+                if(etatInit[i][j] != etatFinal[i][j]){
                     return false;
                 }
             }
@@ -54,10 +54,10 @@ public class Etat {
         if(d == Deplacement.Bas && coordVide[0]==0){// le cas ou la case vide et dans la premiere ligne du taquin
             return false;
         }
-        if (d == Deplacement.Haut && coordVide[0]==listeCases.length - 1){//le cas ou la case vide et dans la derniere ligne du taquin
+        if (d == Deplacement.Haut && coordVide[0]== etatInit.length - 1){//le cas ou la case vide et dans la derniere ligne du taquin
             return false;
         }
-        if (d == Deplacement.Gauche && coordVide[1]==listeCases.length - 1){// le cas ou la case vide et dans la derniere colonne  du taquin
+        if (d == Deplacement.Gauche && coordVide[1]== etatInit.length - 1){// le cas ou la case vide et dans la derniere colonne  du taquin
             return false;
         }
         if (d == Deplacement.Droite && coordVide[1]==0){// le cas ou la case vide et dans la premiere colonne du taquin
@@ -85,12 +85,12 @@ public class Etat {
         this.etatFinal = etatFinal;
     }
 
-    public char[][] getListeCases() {
-        return listeCases;
+    public char[][] getEtatInit() {
+        return etatInit;
     }
 
-    public void setListeCases(char[][] listeCases) {
-        this.listeCases = listeCases;
+    public void setEtatInit(char[][] etatInit) {
+        this.etatInit = etatInit;
     }
 
     public int getScoreManatthan(){ return getF();}
@@ -110,10 +110,10 @@ public class Etat {
      */
 
     public Etat getNextEtat(Deplacement d){
-        char[][] newEtat = new char[listeCases.length][listeCases.length];
+        char[][] newEtat = new char[etatInit.length][etatInit.length];
         //remplir avec l'etat initial
-        for (int i=0; i < listeCases.length; i++){
-            newEtat[i] = listeCases[i].clone();
+        for (int i = 0; i < etatInit.length; i++){
+            newEtat[i] = etatInit[i].clone();
         }
         //chercher la case vide
         int i,j;
@@ -152,14 +152,14 @@ public class Etat {
     public int getBBestSolution(){
         int c = 0;
         //pour chaque cases dans la solution final
-        for (int col = 0; col < listeCases.length; col++){
-            for (int row = 0; row < listeCases.length; row++){
+        for (int col = 0; col < etatInit.length; col++){
+            for (int row = 0; row < etatInit.length; row++){
                 if(etatFinal[row][col] != ' '){
                     // on cherche la meme case dans l'état du plateau (this)
-                    for (int i = 0; i < listeCases.length; i++) {
-                        for (int j = 0; j < listeCases.length; j++) {
+                    for (int i = 0; i < etatInit.length; i++) {
+                        for (int j = 0; j < etatInit.length; j++) {
                             // une fois trouvé, on ajoute au cout sa distance par rapport à sa place final.
-                            if(etatFinal[row][col] == listeCases[i][j]){
+                            if(etatFinal[row][col] == etatInit[i][j]){
                                 c = c + Math.abs(row - i);
                                 c = c + Math.abs(col - j);
                             }
@@ -175,9 +175,9 @@ public class Etat {
     public String toString() {
         String s = "";
 
-        for (int j = 0; j < listeCases.length; j++) {
-            for (int i = 0; i < listeCases.length; i++) {
-                s = s + listeCases[i][j];
+        for (int j = 0; j < etatInit.length; j++) {
+            for (int i = 0; i < etatInit.length; i++) {
+                s = s + etatInit[i][j];
             }
         }
         return s;

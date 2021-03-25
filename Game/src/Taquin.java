@@ -1,36 +1,45 @@
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Taquin {
     public static void main(String[] args){
 
-         char[][] debut = generateInitialTaquin("taquin_2x4b.grid.txt");
+        // Usage : java Taquin p C:\Users\admin\Desktop\taquin\taquin_3x3.grid.txt
+
+         char[][] debut = generateInitialTaquin(args[1]);
          System.out.println("------------------------------");
-         char[][] fin  = generateFinalTaquin("taquin_2x4b.grid.txt");
+         char[][] fin  = generateFinalTaquin(args[1]);
+
 
         Etat etat = new Etat("", debut, fin);
         BreadthFirstSearchAlgorithm l = new BreadthFirstSearchAlgorithm(etat);
         DepthFirstSearchAlgorithm p = new DepthFirstSearchAlgorithm(etat);
         BestFirstSearchAlgorithm m = new BestFirstSearchAlgorithm(etat);
-        Etat resultat = l.solve();
-        Etat resultat2 = p.solve();
-        Etat resultat3 = m.solve();
 
-        System.out.println("Largeur d'abord ...");
-        printSolution(resultat, etat);
-        printDetails(l);
-        System.out.println("____________________");
-        System.out.println("Profondeur d'abord ...");
-        printSolution(resultat2 ,etat);
-        printDetails(p);
 
-        System.out.println("____________________");
-        System.out.println("Meilleur d'abord ...");
-        printSolution(resultat3, etat);
-        printDetails(m);
+
+
+        if (args[0].equals("l")) {
+            Etat resultat = l.solve();
+            System.out.println("Largeur d'abord ...");
+            printSolution(resultat, etat);
+            printDetails(l);
+        }
+        else if(args[0].equals("p")) {
+            System.out.println("____________________");
+            Etat resultat2 = p.solve();
+            System.out.println("Profondeur d'abord ...");
+            printSolution(resultat2, etat);
+            printDetails(p);
+        }
+        else if(args[0].equals("m")) {
+            System.out.println("____________________");
+            Etat resultat3 = m.solve();
+            System.out.println("Meilleur d'abord ...");
+            printSolution(resultat3, etat);
+            printDetails(m);
+        }
 
 
 
@@ -55,32 +64,32 @@ public class Taquin {
     public static void printDetails(Solver solver){
         if (solver instanceof BreadthFirstSearchAlgorithm){
             System.out.println("L'agorithme : "+solver.AlgoName);
-            System.out.println("Le nombre d'états dans la liste fermé quand la résolution est terminée : "+((BreadthFirstSearchAlgorithm) solver).MaxSize);
+            System.out.println("Le nombre d'etats dans la liste ferme quand la resolution est terminee : "+((BreadthFirstSearchAlgorithm) solver).MaxSize);
             //System.out.println("Le nombre d'états dans la liste fermé quand la résolution est terminée "+((BreadthFirstSearchAlgorithm) solver).Fermé.size());
-            System.out.println("Le nombre d'états dans la liste ouverte quand la résolution est terminée "+((BreadthFirstSearchAlgorithm) solver).file.size());
+            System.out.println("Le nombre d'etats dans la liste ouverte quand la resolution est terminee "+((BreadthFirstSearchAlgorithm) solver).file.size());
             double convert = (double) solver.timeCPUNS/1_000_000_000;
             System.out.println("Le temps CPU : "+solver.timeCPUNS+" nano seconds ("+convert+" seconds)");
             System.out.println("La taille de la solution : "+solver.SolutionLength);
-            System.out.println("Les régles de production pour passer de l'etat initial a l'etat final : "+((BreadthFirstSearchAlgorithm) solver).solution.getListeMouvements());
+            System.out.println("Les regles de production pour passer de l'etat initial a l'etat final : "+((BreadthFirstSearchAlgorithm) solver).solution.getListeMouvements());
         }
         else if (solver instanceof DepthFirstSearchAlgorithm){
             System.out.println("L'agorithme : "+solver.AlgoName);
-            System.out.println("Le nombre d'états dans la liste fermé quand la résolution est terminée : "+((DepthFirstSearchAlgorithm) solver).MaxSize);
-            //System.out.println("Le nombre d'états dans la liste fermé quand la résolution est terminée : "+((DepthFirstSearchAlgorithm) solver).Fermé.size());
-            System.out.println("Le nombre d'états dans la liste ouverte quand la résolution est terminée "+((DepthFirstSearchAlgorithm) solver).stack.size());
+            System.out.println("Le nombre d'etats dans la liste ferme quand la resolution est terminee : "+((DepthFirstSearchAlgorithm) solver).MaxSize);
+            System.out.println("Le nombre d'états  : "+((DepthFirstSearchAlgorithm) solver).Ferme.size());
+            System.out.println("Le nombre d'etats dans la liste ouverte quand la resolution est terminee "+((DepthFirstSearchAlgorithm) solver).stack.size());
             double convert = (double) solver.timeCPUNS/1_000_000_000;
             System.out.println("Le temps CPU : "+solver.timeCPUNS+" nano seconds ("+convert+" seconds)");
             System.out.println("La taille de la solution : "+solver.SolutionLength);
-            System.out.println("Les régles de production pour passer de l'etat initial a l'etat final : "+((DepthFirstSearchAlgorithm) solver).solution.getListeMouvements());
+            System.out.println("Les regles de production pour passer de l'etat initial a l'etat final : "+((DepthFirstSearchAlgorithm) solver).solution.getListeMouvements());
         }
         else if (solver instanceof BestFirstSearchAlgorithm){
             System.out.println("L'agorithme : "+solver.AlgoName);
-            System.out.println("Le nombre d'états dans la liste fermé quand la résolution est terminée : "+((BestFirstSearchAlgorithm) solver).Fermé.size());
-            System.out.println("Le nombre d'états dans la liste ouverte quand la résolution est terminée "+((BestFirstSearchAlgorithm) solver).listeOuverte.size());
+            System.out.println("Le nombre d'etats dans la liste ferme quand la resolution est terminee : "+((BestFirstSearchAlgorithm) solver).Ferme.size());
+            System.out.println("Le nombre d'etats dans la liste ouverte quand la resolution est terminee "+((BestFirstSearchAlgorithm) solver).listeOuverte.size());
             double convert = (double) solver.timeCPUNS/1_000_000_000;
             System.out.println("Le temps CPU : "+solver.timeCPUNS+" nano seconds "+convert+" seconds");
             System.out.println("La taille de la solution : "+solver.SolutionLength);
-            System.out.println("Les régles de production pour passer de l'etat initial a l'etat final : "+solver.getSolution());
+            System.out.println("Les regles de production pour passer de l'etat initial a l'etat final : "+solver.getSolution());
         }
     }
 
@@ -241,7 +250,7 @@ public class Taquin {
         if (!c.contains(etat.toHashkey())){
             c.add(etat.toHashkey());
             System.out.println(" - Etat "+ etat.getNbreMouvements() + " : " + etat.getListeMouvements());
-            displayGrid(etat.getListeCases());}
+            displayGrid(etat.getEtatInit());}
     }
 
     public static void displayEtatFinal(Etat etat){

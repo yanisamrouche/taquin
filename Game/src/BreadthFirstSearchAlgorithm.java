@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class BreadthFirstSearchAlgorithm extends Solver {
     HashEtats map;
     LinkedBlockingQueue<Etat> file;
-    List<Etat> Fermé = new ArrayList<>();
+    List<Etat> Ferme = new ArrayList<>();
     Etat solution;
     boolean algoEnCours;
 
@@ -36,8 +36,8 @@ public class BreadthFirstSearchAlgorithm extends Solver {
             file.add(etatInit);
             while (algoEnCours){
                 current = file.poll();
-                Fermé.add(current);
-                generation(current);
+                Ferme.add(current);
+                generateNeighbours(current);
                 testSolution(current);
                 if (file.isEmpty()){
                     algoEnCours = false; }
@@ -49,7 +49,7 @@ public class BreadthFirstSearchAlgorithm extends Solver {
         return solution;
     }
 
-    private int generation(Etat e) {
+    private int generateNeighbours(Etat e) {
         // si cette etat ne peut pas devenir une meilleure solution
         if (solution != null && e.getScoreManatthan() + 1 >= solution.getScoreManatthan()) {
             return 0;
